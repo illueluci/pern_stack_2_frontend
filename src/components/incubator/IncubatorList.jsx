@@ -6,7 +6,7 @@ const IncubatorList = () => {
     const [incubators, setIncubators] = React.useState([]);
 
     return (<div className="container">
-        <h1>The Incubator</h1>
+        
         <table className="table table-striped">
             <thead>
                 <tr>
