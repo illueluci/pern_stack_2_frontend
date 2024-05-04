@@ -16,7 +16,11 @@ const TopBar = () => {
                         <li className="nav-item">
                             <a className="nav-link" href="/incubators/add">Add New Incubator</a>
                         </li>
-                        <li className="nav-item dropdown">
+                        <li className="nav-item">
+                            <a className="nav-link" href="/startUp">StartUp</a>
+                        </li>
+
+                        {/* <li className="nav-item dropdown">
                             <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Startup
                             </a>
@@ -26,7 +30,7 @@ const TopBar = () => {
                                 <li><hr className="dropdown-divider" /></li>
                                 <li><a className="dropdown-item" href="#">Something else here</a></li>
                             </ul>
-                        </li>
+                        </li> */}
 
                         {/* <li className="nav-item">
                             <a className="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>

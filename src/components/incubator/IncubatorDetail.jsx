@@ -15,7 +15,10 @@ const IncubatorDetail = () => {
         Startups: []
     });
 
-    const [startups, setStartups] = useState([]);
+    const [deletedStartup, setDeletedStartup] = useState({
+        startUpName: "",
+        founderName: "",
+    })
 
     const currencyDisplaySetting = {
         style: "currency",
@@ -43,17 +46,42 @@ const IncubatorDetail = () => {
         return diffYears;
     }
 
+    async function deleteStartup(startup){
+        try {
+            if (window.confirm("Are you sure you want to delete this startup?")){
+                const response = await fetch("http://localhost:5000/startup/" + startup.id, {
+                    method: "DELETE",
+                    headers: { "Content-type": "application/json" },
+                });
+
+                if (response.ok) {
+                    setDeletedStartup({
+                        startUpName: startup.startUpName,
+                        founderName: startup.founderName,
+                    });
+                    getOneIncubator();
+
+                } else {
+                    console.log(response);
+                    alert(response.statusText);
+                }
+            }
+
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+
     useEffect(() => {
         getOneIncubator();
     }, []);
-
-    
-    
 
 
     return (<div className="container">
         <h1>{incubator.name}</h1>
         <h3>Code of Incubator: {incubator.code}</h3>
+        {deletedStartup.startUpName ? <p className="text-danger fw-bold">Start-Up {deletedStartup.startUpName} with {deletedStartup.founderName} as founder has been removed.</p> : null}
         <p>Click <span>
                 <a href={`/incubators/${incubator.id}/startup/add`} className="btn btn-dark">
                     Add
@@ -89,8 +117,8 @@ const IncubatorDetail = () => {
                             </td>
                             <td>
                                 <div className="d-flex gap-1">
-                                    <button type="button" className="btn btn-outline-secondary">Edit</button>
-                                    <button type="button" className="btn btn-outline-danger">Delete</button>
+                                    <a type="button" className="btn btn-outline-secondary" href={`/incubators/${incubator.id}/startup/${startup.id}/edit`}>Edit</a>
+                                    <button type="button" className="btn btn-outline-danger" onClick={() => {deleteStartup(startup)}}>Delete</button>
                                 </div>
                             </td>
                         </tr>);

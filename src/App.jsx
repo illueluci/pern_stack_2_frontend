@@ -6,6 +6,7 @@ import ToDoMain from './components/todo/ToDoMain';
 import TopBar from './components/incubator/TopBar';
 import IncubatorForm from './components/incubator/IncubatorForm';
 import StartUpForm from './components/incubator/StartUpForm';
+import StartUpAllList from './components/incubator/StartUpAllList';
 
 function App() {
 return (
@@ -23,8 +24,10 @@ return (
                     <Route path=":incubatorId"  >
                         <Route path="" element={<IncubatorDetail />} />
                         <Route path="startUp/add" element={<StartUpForm />} />
+                        <Route path="startUp/:startupId/edit" element={<StartUpForm />} />
                     </Route>
                 </Route>
+                <Route path="/startUp" element={<StartUpAllList />} />
 
                 <Route index element={<IncubatorList />} />
             </Routes>

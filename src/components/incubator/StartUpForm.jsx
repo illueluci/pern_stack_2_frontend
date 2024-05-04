@@ -3,7 +3,9 @@ import { useParams } from 'react-router';
 import { useEffect } from "react";
 
 const StartUpForm = () => {
-    const paramId = useParams().incubatorId;
+    const params = useParams()
+    const paramIncubatorId = params.incubatorId;
+    const paramStartupId = params.startupId;
 
     const [incubator, setIncubator] = useState({
         name: "",
@@ -12,6 +14,7 @@ const StartUpForm = () => {
         code: "",
     });
     const [startup, setStartup] = useState({
+        id: 0,
         startUpName: "",
         founderName: "",
         educationOfFounder: "SMA",
@@ -24,14 +27,38 @@ const StartUpForm = () => {
 
     async function getOneIncubator() {
         try {
-            const response = await fetch("http://localhost:5000/incubator/" + paramId);
-            const jsonData = await response.json();
-            //agak aneh sih cuma demi dapetin namanya musti ke backend, tapi ya sudahlah
+            let url = "";
+            if (paramStartupId){
+                url = "http://localhost:5000/startup/" + paramStartupId;
+            } else {
+                url = "http://localhost:5000/incubator/" + paramIncubatorId;
+                //agak aneh sih cuma demi dapetin namanya musti ke backend, tapi ya sudahlah
+            }
 
-            setIncubator(jsonData);
-            setStartup((prevValue)=>{
-                return { ...startup, incubatorId: jsonData.id };
-            });
+            const response = await fetch(url);
+            const jsonData = await response.json();
+            
+
+            if (paramStartupId){
+                setIncubator(jsonData.Incubator);
+                setStartup({
+                    id: jsonData.id,
+                    startUpName: jsonData.startUpName,
+                    founderName: jsonData.founderName,
+                    educationOfFounder: jsonData.educationOfFounder,
+                    roleOfFounder: jsonData.roleOfFounder,
+                    dateFound: jsonData.dateFound.slice(0,10),
+                    incubatorId: jsonData.IncubatorId,
+                    valuation: jsonData.valuation
+                });
+            } else {
+                setIncubator(jsonData);
+                setStartup((prevValue) => {
+                    return { ...startup, incubatorId: jsonData.id };
+                });
+            }
+
+            
 
         } catch (error) {
             console.error(error.message);
@@ -46,15 +73,22 @@ const StartUpForm = () => {
         event.preventDefault();
         //console.log(startup);
         try {
+            let method = ""
+            if (paramStartupId){
+                method = "PUT";
+            } else {
+                method = "POST";
+            }
+
             const response = await fetch("http://localhost:5000/startup", {
-                method: "POST",
+                method: method,
                 headers: { "Content-type": "application/json" },
                 body: JSON.stringify(startup)
             });
 
             if (response.ok) {
-                alert("success creating new startup");
-                window.location = `/incubators/${paramId}`;
+                alert(`success ${paramStartupId ? "updating" : "creating new"} startup`);
+                window.location = `/incubators/${paramIncubatorId}`;
             } else {
                 console.log(response);
                 alert(response.statusText);
