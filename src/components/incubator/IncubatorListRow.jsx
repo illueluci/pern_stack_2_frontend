@@ -1,6 +1,8 @@
 import React from "react";
 
-const IncubatorListRow = (incubator) => {
+const IncubatorListRow = (inc) => {
+
+    const incubator = inc.incubator;
 
     return (<tr>
         <td>{incubator.name}</td>
@@ -8,9 +10,9 @@ const IncubatorListRow = (incubator) => {
         <td>{incubator.location}</td>
         <td>{incubator.level}</td>
         <td>
-            <button type="button" className="btn btn-secondary">
+            <a href={"/incubators/" + incubator.id} className="btn btn-secondary">
                 See Detail
-            </button>
+            </a>
         </td>
     </tr>);
 }

@@ -37,8 +37,6 @@ const IncubatorForm = () => {
     async function handleSubmit (event){
         event.preventDefault();
 
-        console.log(incubator);
-
         try {
             const response = await fetch("http://localhost:5000/incubator", {
                 method: "POST",
@@ -46,8 +44,14 @@ const IncubatorForm = () => {
                 body: JSON.stringify(incubator)
             });
 
-            alert("success creating new incubator");
-            window.location = "/incubators";
+            if (response.ok){
+                alert("success creating new incubator");
+                window.location = "/incubators";
+            } else {
+                console.log(response);
+                alert(response.statusText);
+            }
+            
         } catch (error) {
             console.error(error);
         }

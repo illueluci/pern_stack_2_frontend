@@ -1,9 +1,27 @@
 import React from "react";
 import IncubatorListRow from "./IncubatorListRow";
+import { useEffect } from "react";
 
 const IncubatorList = () => {
 
     const [incubators, setIncubators] = React.useState([]);
+
+    async function getIncubators() {
+        try {
+            const response = await fetch("http://localhost:5000/incubator");
+            const jsonData = await response.json();
+
+            setIncubators(jsonData);
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    useEffect(() => {
+        getIncubators();
+    }, []);
+
+    
 
     return (<div className="container">
         
