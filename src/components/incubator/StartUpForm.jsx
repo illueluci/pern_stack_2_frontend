@@ -143,6 +143,10 @@ const StartUpForm = () => {
         return formattedToday;
     }
 
+    function debugFunc(){
+        console.log(startup);
+    }
+
     return  (<div className="container">
         <h1>Add new Start-Up</h1>
         <h3>Incubator Name: {incubator.name}</h3>
@@ -159,7 +163,7 @@ const StartUpForm = () => {
                     <div className="mb-3">
                         <label className="form-label">Education of Founder</label>
                         {/* <input type="text" className="form-control" value={startup.educationOfFounder} name="educationOfFounder" onChange={handleStartupChange} /> */}
-                        <select className="form-select" name="educationOfFounder" onChange={handleStartupChange}>
+                        <select className="form-select" name="educationOfFounder" onChange={handleStartupChange} value={startup.educationOfFounder}>
                             {educationChoices.map((x, index)=>{
                                 return (<option value={x} key={index}>{x}</option>);
                             })}
@@ -222,14 +226,11 @@ const StartUpForm = () => {
             </div>
             
             
-            
-            
-            
-
-
-            
             <button className="btn btn-success" type="submit">
                 Submit
+            </button>
+            <button type="button" onClick={debugFunc}>
+                test
             </button>
 
         </form>
